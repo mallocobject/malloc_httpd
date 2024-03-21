@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>malloc_httpd</title>
+	<link rel="shortcut icon" href="#">
+	<style>
+		#box {
+			width: 200px;
+			height: 100px;
+			border: solid 1px #90b;
+		}
+	</style>
+</head>
+
+<body>
+	<input type="text" name="TEXT" placeholder="请输入">
+	<button>submit</button>
+	<br>
+	<br>
+	<div id="box"></div>
+
+	<script>
+		const btn = document.querySelector('button');
+		const ipt = document.querySelector('input');
+		const text = document.querySelector('#box');
+		const func = () => {
+			const xhr = new XMLHttpRequest();
+			xhr.open('POST', '127.0.0.1:80', true);
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+			xhr.send(`${ipt.name}=${ipt.value}`);
+
+			xhr.onreadystatechange = function () {
+				// 判断服务器是否返回所有结果
+				if (xhr.readyState === 4) {
+					// 判断状态码
+					if (xhr.status >= 200 && xhr.status < 300) {
+						text.innerHTML = xhr.response;
+					}
+				}
+			}
+		};
+		ipt.addEventListener('keyup', e => {
+			// e.preventDefault();
+			if (e.key === 'Enter') {
+				func();
+			}
+		});
+		btn.addEventListener('click', e => {
+			// e.preventDefault();
+			func();
+		});
+	</script>
+</body>
+
+</html>
